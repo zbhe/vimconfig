@@ -49,6 +49,49 @@ filetype plugin indent on
     \   exe "normal g`\"" |
     \ endif
 
+let g:auto_highlight_word_enabled = 0
+let g:cur_highlight_word = ""
+function HighlightWord(word)
+	hi highlightWord term=bold ctermfg=blue ctermbg=yellow guifg=red guibg=#FFFF00
+	let l:cmd = 'match highlightWord /\<\V' . a:word . '\>/' 
+	execute l:cmd
+	let @/ = a:word
+endfunction
+function AutoHighlight()
+	let l:word = expand("<cword>")
+	if l:word != "" && l:word != "/" && l:word != "\\"
+		if l:word == g:cur_highlight_word
+			return
+		endif
+		let g:cur_highlight_word = l:word
+		call HighlightWord(g:cur_highlight_word)
+	endif
+endfunction
+function AutoHighlight_Toggle()
+	if g:auto_highlight_word_enabled == 0
+		let g:auto_highlight_word_enabled = 1
+		call AutoHighlight()
+		" echo "Auto Highlight ON"
+		echo ""
+	else
+		let g:auto_highlight_word_enabled = 0
+		let g:cur_highlight_word = ""
+		match none
+		" echo "Auto Highlight OFF"
+		echo ""
+	endif
+endfunction
+
+map <space> :nohlsearch<cr>:call AutoHighlight_Toggle()<cr>
+function FindFunction()
+	let l:word = expand("<cword>")
+	if l:word != "" && l:word != "/" && l:word != "\\"
+		let l:cmd = "/function.*\\<" . l:word . "\\>"
+		set hlsearch
+		execute l:cmd
+	endif
+endfunction
+map f :call FindFunction()<cr>
 command Date r !date "+\%F \%T"
 command -nargs=1 -complete=file T tabedit <args>
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
