@@ -11,6 +11,8 @@ Plugin 'tomasr/molokai'
 Plugin 'vim-scripts/phd'
 Plugin 'Lokaltog/vim-powerline'
 Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-session'
 "Plugin 'nathanaelkane/vim-indent-guides'
 "Plugin 'derekwyatt/vim-fswitch'
 "Plugin 'kshenoy/vim-signature'
@@ -28,7 +30,7 @@ Plugin 'scrooloose/nerdcommenter'
 "Plugin 'derekwyatt/vim-protodef'
 Plugin 'scrooloose/nerdtree'
 "Plugin 'fholgado/minibufexpl.vim'
-"Plugin 'gcmt/wildfire.vim'
+Plugin 'gcmt/wildfire.vim'
 "Plugin 'sjl/gundo.vim'
 "Plugin 'Lokaltog/vim-easymotion'
 "Plugin 'suan/vim-instant-markdown'
@@ -67,6 +69,9 @@ nmap <C-a> 0
 nmap <C-e> $
 nmap L gt
 nmap H gT
+nmap S :OpenSession<CR>
+let g:session_autosave = 'yes'
+let g:session_autoload = 'no'
 " 开启实时搜索功能
 set incsearch
 " 搜索时大小写不敏感
