@@ -38,7 +38,17 @@ filetype plugin indent on
 
 " 让配置变更立即生效
 "autocmd BufWritePost $MYVIMRC source $MYVIMRC
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+ autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
 
+command Date r !date "+\%F \%T"
+command -nargs=1 -complete=file T tabedit <args>
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 let mapleader=";"
 set modelines=0		" CVE-2007-2438
 imap <C-d> <Esc>
@@ -93,6 +103,7 @@ set tabstop=8
 " 让 vim 把连续数量的空格视为一个制表符
 set softtabstop=8
 " 基于缩进或语法进行代码折叠
+set autoindent		" always set autoindenting on
 "set foldmethod=indent
 "set foldmethod=syntax
 set foldmethod=manual
