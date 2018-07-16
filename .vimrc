@@ -1,5 +1,6 @@
 " Configuration file for vim
 " git clone https://github.com/VundleVim/Vundle.vim.git  ~/.vim/bundle/Vundle.vim
+" VundleInstall
 " vundle 环境设置
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
