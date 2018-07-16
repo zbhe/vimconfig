@@ -85,11 +85,19 @@ endfunction
 
 map <space> :nohlsearch<cr>:call AutoHighlight_Toggle()<cr>
 function FindFunction()
-	let l:word = expand("<cword>")
-	if l:word != "" && l:word != "/" && l:word != "\\"
-		let l:cmd = "/function.*\\<" . l:word . "\\>"
-		set hlsearch
-		execute l:cmd
+	let ext = expand("%:e")
+	let selectword = expand("<cword>")
+	echo ext
+	if ext == "lua"
+		if selectword != "" && selectword != "/" && selectword != "\\"
+			let cmd = "/function.*\\<" . selectword . "\\>"
+			execute cmd
+		endif
+	elseif ext == "c" || ext == "cpp" || ext == "h" || ext == "hpp"
+		if selectword != "" && selectword != "/" && selectword != "\\"
+			let cmd = "/.*\\<" . selectword . "\\> *(.*)"
+			execute cmd
+		endif
 	endif
 endfunction
 map f :call FindFunction()<cr>
