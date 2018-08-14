@@ -57,6 +57,8 @@ let g:ycm_confirm_extra_conf=0 "关闭加载.ycm_extra_conf.py提示
 let g:ycm_seed_identifiers_with_syntax=1    " 语法关键字补全
 let g:ycm_complete_in_comments = 1 "在注释输入中也能补全
 let g:ycm_complete_in_strings = 1 "在字符串输入中也能补全
+let g:ycm_goto_buffer_command = "split-or-existing-window" "GoTo 时分割窗口
+map <leader>o :tab YcmCompleter GoTo<CR>
 map <leader>g :YcmCompleter GoTo<CR>
 
 let g:auto_highlight_word_enabled = 0
