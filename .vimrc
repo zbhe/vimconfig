@@ -27,7 +27,8 @@ Plugin 'xolox/vim-session'
 Plugin 'scrooloose/nerdcommenter'
 "Plugin 'vim-scripts/DrawIt'
 "Plugin 'SirVer/ultisnips'
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'rdnetto/YCM-Generator'
 "Plugin 'derekwyatt/vim-protodef'
 Plugin 'scrooloose/nerdtree'
 "Plugin 'fholgado/minibufexpl.vim'
@@ -39,6 +40,7 @@ Plugin 'gcmt/wildfire.vim'
 " 插件列表结束
 call vundle#end()
 filetype plugin indent on
+let mapleader=";"
 
 " 让配置变更立即生效
 "autocmd BufWritePost $MYVIMRC source $MYVIMRC
@@ -49,6 +51,13 @@ filetype plugin indent on
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
     \   exe "normal g`\"" |
     \ endif
+
+let g:ycm_global_ycm_extra_conf = "~/.vim/bundle/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py"
+let g:ycm_confirm_extra_conf=0 "关闭加载.ycm_extra_conf.py提示
+let g:ycm_seed_identifiers_with_syntax=1    " 语法关键字补全
+let g:ycm_complete_in_comments = 1 "在注释输入中也能补全
+let g:ycm_complete_in_strings = 1 "在字符串输入中也能补全
+map <leader>g :YcmCompleter GoTo<CR>
 
 let g:auto_highlight_word_enabled = 0
 let g:cur_highlight_word = ""
@@ -104,12 +113,10 @@ map f :call FindFunction()<cr>
 command Date r !date "+\%F \%T"
 command -nargs=1 -complete=file T tabedit <args>
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
-let mapleader=";"
 set modelines=0		" CVE-2007-2438
 imap <C-d> <Esc>
 vmap <C-d> <Esc>
 nmap <C-d> :q<CR>
-nmap <C-w> :w<CR>
 nmap <C-c> :q!<CR>
 
 map <leader>j 5j
