@@ -58,6 +58,7 @@ let g:ycm_seed_identifiers_with_syntax=1    " 语法关键字补全
 let g:ycm_complete_in_comments = 1 "在注释输入中也能补全
 let g:ycm_complete_in_strings = 1 "在字符串输入中也能补全
 let g:ycm_goto_buffer_command = "split-or-existing-window" "GoTo 时分割窗口
+let ycm_show_diagnostics_ui = 0
 map <leader>o :tab YcmCompleter GoTo<CR>
 map <leader>g :YcmCompleter GoTo<CR>
 
