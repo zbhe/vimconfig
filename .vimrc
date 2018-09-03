@@ -117,6 +117,7 @@ command Date r !date "+\%F \%T"
 command -nargs=1 -complete=file T tabedit <args>
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 set modelines=0		" CVE-2007-2438
+set matchpairs+=<:>
 imap <C-d> <Esc>
 vmap <C-d> <Esc>
 nmap <C-d> :q<CR>
