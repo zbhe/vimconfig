@@ -59,8 +59,9 @@ let g:ycm_complete_in_comments = 1 "在注释输入中也能补全
 let g:ycm_complete_in_strings = 1 "在字符串输入中也能补全
 let g:ycm_goto_buffer_command = "split-or-existing-window" "GoTo 时分割窗口
 let ycm_show_diagnostics_ui = 0
-map <leader>o :tab YcmCompleter GoTo<CR>
-map <leader>g :YcmCompleter GoTo<CR>
+let g:ycm_autoclose_preview_window_after_insertion = 1
+"let g:ycm_autoclose_preview_window_after_completion = 1
+map <leader>g :tab YcmCompleter GoTo<CR>
 
 let g:auto_highlight_word_enabled = 0
 let g:cur_highlight_word = ""
