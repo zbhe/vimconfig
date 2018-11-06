@@ -121,6 +121,9 @@ set modelines=0		" CVE-2007-2438
 set matchpairs+=<:>
 imap <C-d> <Esc>
 vmap <C-d> <Esc>
+cmap <C-d> <Esc>
+omap <C-d> <Esc>
+
 nmap <C-d> :q<CR>
 nmap <C-c> :q!<CR>
 
