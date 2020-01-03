@@ -195,3 +195,4 @@ au BufWrite /private/tmp/crontab.* set nowritebackup nobackup
 au BufWrite /private/etc/pw.* set nowritebackup nobackup
 
 let skip_defaults_vim=1
+hi TabLineSel ctermfg=Yellow ctermbg=Black
