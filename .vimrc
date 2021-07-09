@@ -18,7 +18,7 @@ Plugin 'Lokaltog/vim-powerline'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-session'
-"Plugin 'zxqfl/tabnine-vim'
+Plugin 'zxqfl/tabnine-vim'
 "Plugin 'nathanaelkane/vim-indent-guides'
 "Plugin 'derekwyatt/vim-fswitch'
 "Plugin 'kshenoy/vim-signature'
@@ -33,8 +33,8 @@ Plugin 'MattesGroeger/vim-bookmarks'
 Plugin 'scrooloose/nerdcommenter'
 "Plugin 'vim-scripts/DrawIt'
 "Plugin 'SirVer/ultisnips'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'rdnetto/YCM-Generator'
+"Plugin 'Valloric/YouCompleteMe'
+"Plugin 'rdnetto/YCM-Generator'
 "Plugin 'derekwyatt/vim-protodef'
 Plugin 'scrooloose/nerdtree'
 "Plugin 'fholgado/minibufexpl.vim'
@@ -58,16 +58,16 @@ let mapleader=";"
     \   exe "normal g`\"" |
     \ endif
 
-let g:ycm_global_ycm_extra_conf = "~/.vim/bundle/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py"
-let g:ycm_confirm_extra_conf=0 "关闭加载.ycm_extra_conf.py提示
-let g:ycm_seed_identifiers_with_syntax=1    " 语法关键字补全
-let g:ycm_complete_in_comments = 1 "在注释输入中也能补全
-let g:ycm_complete_in_strings = 1 "在字符串输入中也能补全
-let g:ycm_goto_buffer_command = "split-or-existing-window" "GoTo 时分割窗口
-let ycm_show_diagnostics_ui = 0
-let g:ycm_autoclose_preview_window_after_insertion = 1
-"let g:ycm_autoclose_preview_window_after_completion = 1
-map <leader>g :tab YcmCompleter GoTo<CR>
+"let g:ycm_global_ycm_extra_conf = "~/.vim/bundle/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py"
+"let g:ycm_confirm_extra_conf=0 "关闭加载.ycm_extra_conf.py提示
+"let g:ycm_seed_identifiers_with_syntax=1    " 语法关键字补全
+"let g:ycm_complete_in_comments = 1 "在注释输入中也能补全
+"let g:ycm_complete_in_strings = 1 "在字符串输入中也能补全
+"let g:ycm_goto_buffer_command = "split-or-existing-window" "GoTo 时分割窗口
+"let ycm_show_diagnostics_ui = 0
+"let g:ycm_autoclose_preview_window_after_insertion = 1
+""let g:ycm_autoclose_preview_window_after_completion = 1
+"map <leader>g :tab YcmCompleter GoTo<CR>
 
 let g:auto_highlight_word_enabled = 0
 let g:cur_highlight_word = ""
@@ -173,14 +173,15 @@ syntax on
 colorscheme molokai
 " 自适应不同语言的智能缩进
 filetype indent on
+set shiftwidth=4
 " 制表符扩展为空格
 set noexpandtab
 " 设置编辑时制表符占用空格数
-set tabstop=8
+set tabstop=4
 " 设置格式化时制表符占用空格数
 "set shiftwidth=8
 " 让 vim 把连续数量的空格视为一个制表符
-set softtabstop=8
+set softtabstop=4
 " 基于缩进或语法进行代码折叠
 set autoindent		" always set autoindenting on
 "set foldmethod=indent
