@@ -190,6 +190,11 @@ set foldmethod=manual
 " 启动 vim 时关闭折叠代码
 set nofoldenable
 
+if has('persistent_undo')         "check if your vim version supports
+	set undodir=$HOME/.vim/undo     "directory where the undo files will be stored
+	set undofile                    "turn on the feature
+endif
+
 " Don't write backup file if vim is being called by "crontab -e"
 au BufWrite /private/tmp/crontab.* set nowritebackup nobackup
 " Don't write backup file if vim is being called by "chpass"
