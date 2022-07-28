@@ -10,6 +10,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'tomasr/molokai'
 Plugin 'vim-scripts/hickop'
+"Plugin 'vim-scripts/gtags.vim'
 Plugin 'vim-scripts/oceandeep'
 Plugin 'vim-scripts/darkspectrum'
 Plugin 'vim-scripts/Gummybears'
@@ -19,6 +20,9 @@ Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-session'
 Plugin 'zxqfl/tabnine-vim'
+Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'skywind3000/gutentags_plus'
+Plugin 'milkypostman/vim-togglelist'
 "Plugin 'nathanaelkane/vim-indent-guides'
 "Plugin 'derekwyatt/vim-fswitch'
 "Plugin 'kshenoy/vim-signature'
@@ -122,7 +126,8 @@ endfunction
 map f :call FindFunction()<cr>
 command Date r !date "+\%F \%T"
 command -nargs=1 -complete=file T tabedit <args>
-map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+"map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+set switchbuf+=usetab,newtab
 set modelines=0		" CVE-2007-2438
 set matchpairs+=<:>
 imap <C-d> <Esc>
@@ -138,6 +143,7 @@ imap <C-]> <Esc> :execute 'tab tag '.expand('<cword>')<CR>
 
 map <leader>j 5j
 map <leader>k 5k
+map <leader>ww <C-W><C-W>
 map <leader>t :NERDTreeToggle<CR>
 "let NERDTreeMapOpenInTab='<ENTER>'
 "nmap <C-x> :q!<CR>
@@ -148,6 +154,50 @@ nmap H gT
 nmap S :OpenSession<CR>
 let g:session_autosave = 'yes'
 let g:session_autoload = 'no'
+
+let g:gutentags_plus_switch = 1
+let g:gutentags_plus_nomap = 1
+"find symbol
+noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
+"Find functions calling this function
+noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
+"Find this file
+noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
+"Find files #including this file
+noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
+"Find this definition
+noremap <silent> <leader>gd :GscopeFind g <C-R><C-W><cr>
+" gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
+let g:gutentags_project_root = ['Makefile', 'CMakeLists.txt', '.root', '.svn', '.git']
+"['.root', '.svn', '.git', '.project']
+
+" 所生成的数据文件的名称
+let g:gutentags_ctags_tagfile = '.tags'
+
+" 同时开启 ctags 和 gtags 支持：
+let g:gutentags_modules = []
+"if executable('ctags')
+	"let g:gutentags_modules += ['ctags']
+"endif
+if executable('gtags-cscope') && executable('gtags')
+	let g:gutentags_modules += ['gtags_cscope']
+endif
+
+" 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
+let g:gutentags_cache_dir = expand('~/.cache/tags')
+
+" 配置 ctags 的参数，老的 Exuberant-ctags 不能有 --extra=+q，注意
+"let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+"let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+"let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+" 如果使用 universal ctags 需要增加下面一行，老的 Exuberant-ctags 不能加下一行
+"let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
+let g:gutentags_define_advanced_commands = 1
+
+" 禁用 gutentags 自动加载 gtags 数据库的行为
+"let g:gutentags_auto_add_gtags_cscope = 0
+
 " 开启实时搜索功能
 set incsearch
 " 搜索时大小写不敏感
