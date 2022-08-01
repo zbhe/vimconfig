@@ -138,9 +138,6 @@ omap <C-d> <Esc>
 nmap <C-d> :q<CR>
 nmap <C-c> :q!<CR>
 
-nmap <C-]> :execute 'tab tag '.expand('<cword>')<CR>
-imap <C-]> <Esc> :execute 'tab tag '.expand('<cword>')<CR>
-
 map <leader>j 5j
 map <leader>k 5k
 map <leader>ww <C-W><C-W>
@@ -155,6 +152,8 @@ nmap S :OpenSession<CR>
 let g:session_autosave = 'yes'
 let g:session_autoload = 'no'
 
+let $GTAGSLABEL = 'native-pygments'
+let $GTAGSCONF = '/usr/local/share/gtags/gtags.conf'
 let g:gutentags_plus_switch = 1
 let g:gutentags_plus_nomap = 1
 "find symbol
