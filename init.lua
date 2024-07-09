@@ -102,6 +102,7 @@ Plug("sainnhe/edge")
 Plug("sainnhe/sonokai")
 Plug("Mofiqul/vscode.nvim")
 Plug("yegappan/taglist")
+Plug("williamboman/mason.nvim")
 
 -- On-demand loading: loaded when a file with a specific file type is opened
 --Plug('tpope/vim-fireplace', { ['for'] = 'clojure' })
@@ -110,20 +111,23 @@ Plug("yegappan/taglist")
 --Plug('~/my-prototype-plugin')
 vim.call('plug#end')
 
+require("mason").setup()
 require("which-key").setup {
 	-- your configuration comes here
 	-- or leave it empty to use the default settings
 	-- refer to the configuration section below
 }
 
---require'lspconfig'.ccls.setup{
+require'lspconfig'.lua_ls.setup{}
+
+--require'lspconfig'.clangd.setup{
 	--compilationDatabaseDirectory = ".build";
-    --index = {
-      --threads = 0;
-    --};
-    --clang = {
-      --excludeArgs = { "-frounding-math"} ;
-    --};
+	--index = {
+	  --threads = 0;
+	--};
+	--clang = {
+	  --excludeArgs = { "-frounding-math"} ;
+	--};
 --}
 
 require'nvim-treesitter.configs'.setup {
