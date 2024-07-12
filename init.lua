@@ -132,8 +132,11 @@ local function nvim_tree_on_attach(bufnr)
 	api.config.mappings.default_on_attach(bufnr)
 
 	-- custom mappings
-	vim.keymap.set('n', 'H', api.tree.collapse_all, opts('Up'))
-	vim.keymap.set('n', 't', api.node.open.tab, opts('Up'))
+	vim.keymap.set('n', 'r', api.tree.change_root_to_parent, opts('chroot'))
+	vim.keymap.set('n', 'R', api.tree.change_root_to_node, opts('chroot'))
+	vim.keymap.set('n', 'H', "gT", opts('tabprev'))
+	vim.keymap.set('n', 'L', "gt", opts('tabnext'))
+	vim.keymap.set('n', 't', api.node.open.tab, opts('open'))
 end
 
 -- pass to setup along with your other options
