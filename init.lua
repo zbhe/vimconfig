@@ -1,5 +1,7 @@
 local vim = vim
 local Plug = vim.fn['plug#']
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 vim.g.mapleader = ";"
 vim.g.maplocalleader =';'
 vim.g.rainbow_active = 1
@@ -11,6 +13,7 @@ vim.o.smartindent = true
 vim.o.autoindent = true
 vim.o.ignorecase = true
 vim.o.encoding = 'utf-8'
+vim.o.laststatus = 0
 vim.opt.shiftwidth = 4
 vim.api.nvim_set_option("clipboard","unnamed")
 
@@ -29,9 +32,10 @@ keymap("<C-d>", "<Esc>", {"i","v", "c", "o", "n"})
 keymap("<C-D>", "<Esc>", {"i","v", "c", "o", "n"})
 keymap("L", "gt")
 keymap("H", "gT")
-keymap("<leader>t", ":NERDTreeToggle<cr>")
+keymap("<leader>t", ":NvimTreeFindFileToggle<cr>")
 keymap("<leader>j", "10j")
 keymap("<leader>k", "10k")
+keymap("<leader>ww", "<C-w><C-w>")
 local lastplace = vim.api.nvim_create_augroup("LastPlace", {})
 vim.api.nvim_clear_autocmds({ group = lastplace })
 vim.api.nvim_create_autocmd("BufReadPost", {
@@ -48,6 +52,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 vim.api.nvim_create_user_command('T', function(s)vim.cmd("tabnew " .. s.args) end, { nargs = 1, complete = "file" })
+vim.api.nvim_create_user_command('E', function(s)vim.cmd("tab drop " .. s.args) end, { nargs = 1, complete = "file" })
 
 vim.call('plug#begin')
 
@@ -57,6 +62,10 @@ Plug('folke/which-key.nvim')
 Plug('nvim-lua/plenary.nvim')
 Plug('luochen1990/rainbow')
 Plug('neovim/nvim-lspconfig')
+Plug('ms-jpq/coq_nvim')
+Plug('ms-jpq/coq.artifacts', {branch = 'artifacts'})
+Plug('ms-jpq/coq.thirdparty', {branch = '3p'})
+--Plug('hrsh7th/nvim-cmp')
 Plug('xolox/vim-misc')
 Plug('xolox/vim-session')
 Plug('tomasr/molokai')
@@ -65,13 +74,13 @@ Plug('terryma/vim-expand-region')
 --Plug('sharkdp/fd')
 --Plug('nvim-telescope/telescope.nvim')
 -- Any valid git URL is allowed
---Plug('https://github.com/junegunn/seoul256.vim.git')
+Plug('nvim-tree/nvim-web-devicons')
 
 -- Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
 --Plug('fatih/vim-go', { ['tag'] = '*' })
 
 -- Using a non-default branch
-Plug('neoclide/coc.nvim', { ['branch'] = 'release' })
+--Plug('neoclide/coc.nvim', { ['branch'] = 'release' })
 
 -- Use 'dir' option to install plugin in a non-default directory
 --Plug('junegunn/fzf', { ['dir'] = '~/.fzf' })
@@ -84,12 +93,13 @@ Plug('neoclide/coc.nvim', { ['branch'] = 'release' })
 
 -- On-demand loading: loaded when the specified command is executed
 --Plug('preservim/nerdtree', { ['on'] = 'NERDTreeToggle' })
-Plug('scrooloose/nerdtree')
+--Plug('scrooloose/nerdtree')
+Plug('nvim-tree/nvim-tree.lua')
 Plug('scrooloose/nerdcommenter')
 Plug('MattesGroeger/vim-bookmarks')
 Plug('nvim-treesitter/nvim-treesitter')
-Plug('vim-airline/vim-airline')
-Plug('vim-airline/vim-airline-themes')
+--Plug('vim-airline/vim-airline')
+--Plug('vim-airline/vim-airline-themes')
 Plug('navarasu/onedark.nvim')
 Plug('morhetz/gruvbox')
 Plug('altercation/vim-colors-solarized')
@@ -103,6 +113,7 @@ Plug("sainnhe/sonokai")
 Plug("Mofiqul/vscode.nvim")
 Plug("yegappan/taglist")
 Plug("williamboman/mason.nvim")
+Plug("glepnir/lspsaga.nvim")
 
 -- On-demand loading: loaded when a file with a specific file type is opened
 --Plug('tpope/vim-fireplace', { ['for'] = 'clojure' })
@@ -110,26 +121,27 @@ Plug("williamboman/mason.nvim")
 -- Unmanaged plugin (manually installed and updated)
 --Plug('~/my-prototype-plugin')
 vim.call('plug#end')
+require('nvim-web-devicons').setup()
+local function nvim_tree_on_attach(bufnr)
+	local api = require "nvim-tree.api"
+	local function opts(desc)
+		return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+	end
 
-require("mason").setup()
-require("which-key").setup {
-	-- your configuration comes here
-	-- or leave it empty to use the default settings
-	-- refer to the configuration section below
+	-- default mappings
+	api.config.mappings.default_on_attach(bufnr)
+
+	-- custom mappings
+	vim.keymap.set('n', 'H', api.tree.collapse_all, opts('Up'))
+	vim.keymap.set('n', 't', api.node.open.tab, opts('Up'))
+end
+
+-- pass to setup along with your other options
+require("nvim-tree").setup {
+	on_attach = nvim_tree_on_attach,
 }
-
-require'lspconfig'.lua_ls.setup{}
-
---require'lspconfig'.clangd.setup{
-	--compilationDatabaseDirectory = ".build";
-	--index = {
-	  --threads = 0;
-	--};
-	--clang = {
-	  --excludeArgs = { "-frounding-math"} ;
-	--};
---}
-
+require("mason").setup()
+require("which-key").setup { }
 require'nvim-treesitter.configs'.setup {
 	-- 安装 language parser
 	-- :TSInstallInfo 命令查看支持的语言
@@ -173,28 +185,38 @@ end
 local keyset = vim.keymap.set
 local opts = {silent = true, noremap = true, expr = true, replace_keycodes = false}
 --keyset("i", "<TAB>", 'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opts)
-keyset("i", "<TAB>", [[coc#pum#visible() ? coc#pum#next(1) :  "\<TAB>"]], opts)
-keyset("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
+--keyset("i", "<TAB>", [[coc#pum#visible() ? coc#pum#next(1) :  "\<TAB>"]], opts)
+--keyset("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
 -- Make <CR> to accept selected completion item or notify coc.nvim to format
 -- <C-g>u breaks current undo, please make your own choice
-keyset("i", "<cr>", [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], opts)
+--keyset("i", "<cr>", [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], opts)
 --nmap <silent> <leader>gd <Plug>(coc-definition)
-keymap("<leader>gd", ":call CocAction('jumpDefinition', 'tab drop')<cr>")
+--keymap("<leader>gd", ":call CocAction('jumpDefinition', 'tab drop')<cr>")
 keymap("<space>", ":nohlsearch<cr>")
 vim.g.Tlist_GainFocus_On_ToggleOpen = 1
 vim.g.Tlist_Show_One_File = 1
 keymap("<leader>fs", ":TlistToggle<cr>")
+require("lspsaga").setup({
+	lightbulb = {
+		enable = false
+	}
+})
+keymap("<leader>cmd", ":Lspsaga term_toggle<cr>")
+require("lsp_config")
 vim.cmd([[
 set pumheight=10
 set hidden
 set updatetime=100
 set shortmess+=c
 set signcolumn=number
-autocmd CursorHold * silent call CocActionAsync('highlight')
-nmap <leader>rn <Plug>(coc-rename)
-nmap <silent> <leader>gy <Plug>(coc-type-definition)
-nmap <silent> <leader>gi <Plug>(coc-implementation)
-nmap <silent> <leader>gs <Plug>(coc-references)
 colorscheme gruvbox
 ]])
+vim.g.coq_settings = {
+	auto_start = 'shut-up'
+}
+--autocmd CursorHold * silent call CocActionAsync('highlight')
+--nmap <leader>rn <Plug>(coc-rename)
+--nmap <silent> <leader>gy <Plug>(coc-type-definition)
+--nmap <silent> <leader>gi <Plug>(coc-implementation)
+--nmap <silent> <leader>gs <Plug>(coc-references)
 vim.api.nvim_set_hl(0, 'Comment', { italic=true })
