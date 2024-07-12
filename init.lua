@@ -1,3 +1,9 @@
+--by bobo for neovim
+--要安装nerd字体：https://www.nerdfonts.com/font-downloads
+--先手动安装plug：
+--wget https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim  -O ~/.config/nvim/autoload/plug.vim
+--PlugInstall 安装完插件后需要执行：COQdeps
+--
 local vim = vim
 local Plug = vim.fn['plug#']
 vim.g.loaded_netrw = 1
@@ -136,7 +142,8 @@ local function nvim_tree_on_attach(bufnr)
 	vim.keymap.set('n', 'R', api.tree.change_root_to_node, opts('chroot'))
 	vim.keymap.set('n', 'H', "gT", opts('tabprev'))
 	vim.keymap.set('n', 'L', "gt", opts('tabnext'))
-	vim.keymap.set('n', 't', api.node.open.tab, opts('open'))
+	vim.keymap.set('n', 't', api.node.open.tab_drop, opts('open'))
+	vim.keymap.set('n', 'o', api.node.open.tab, opts('open'))
 end
 
 -- pass to setup along with your other options
@@ -185,16 +192,6 @@ function _G.check_back_space()
 	return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
 end
 
-local keyset = vim.keymap.set
-local opts = {silent = true, noremap = true, expr = true, replace_keycodes = false}
---keyset("i", "<TAB>", 'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opts)
---keyset("i", "<TAB>", [[coc#pum#visible() ? coc#pum#next(1) :  "\<TAB>"]], opts)
---keyset("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
--- Make <CR> to accept selected completion item or notify coc.nvim to format
--- <C-g>u breaks current undo, please make your own choice
---keyset("i", "<cr>", [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], opts)
---nmap <silent> <leader>gd <Plug>(coc-definition)
---keymap("<leader>gd", ":call CocAction('jumpDefinition', 'tab drop')<cr>")
 keymap("<space>", ":nohlsearch<cr>")
 vim.g.Tlist_GainFocus_On_ToggleOpen = 1
 vim.g.Tlist_Show_One_File = 1
@@ -217,9 +214,4 @@ colorscheme gruvbox
 vim.g.coq_settings = {
 	auto_start = 'shut-up'
 }
---autocmd CursorHold * silent call CocActionAsync('highlight')
---nmap <leader>rn <Plug>(coc-rename)
---nmap <silent> <leader>gy <Plug>(coc-type-definition)
---nmap <silent> <leader>gi <Plug>(coc-implementation)
---nmap <silent> <leader>gs <Plug>(coc-references)
 vim.api.nvim_set_hl(0, 'Comment', { italic=true })
