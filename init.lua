@@ -4,6 +4,7 @@
 --wget https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim  -O ~/.config/nvim/autoload/plug.vim
 --PlugInstall 安装完插件后需要执行：COQdeps
 --执行 MasonInstall lua-language-server clangd 安装LSP服务器
+--然后在 lua/lsp_config.lua中setup
 --:Mason 可以查看安装列表
 
 local vim = vim
