@@ -205,9 +205,13 @@ keymap("<leader>fs", ":TlistToggle<cr>")
 require("lspsaga").setup({
 	lightbulb = {
 		enable = false
-	}
+	},
+	outline = {
+		win_position = 'left'
+	},
 })
 keymap("<leader>cmd", ":Lspsaga term_toggle<cr>")
+
 require("lsp_config")
 vim.cmd([[
 set pumheight=10
