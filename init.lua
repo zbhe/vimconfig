@@ -6,6 +6,9 @@
 --执行 MasonInstall lua-language-server clangd 安装LSP服务器
 --然后在 lua/lsp_config.lua中setup
 --:Mason 可以查看安装列表
+--windows下需要用管理员模式手动安装coq https://github.com/ms-jpq/coq_nvim/issues/589:
+--git -c core.symlinks=true clone https://github.com/ms-jpq/coq_nvim.git
+
 
 local vim = vim
 local Plug = vim.fn['plug#']
