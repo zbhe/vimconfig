@@ -209,10 +209,33 @@ vim.g.Tlist_Show_One_File = 1
 keymap("<leader>fs", ":TlistToggle<cr>")
 require("lspsaga").setup({
 	lightbulb = {
-		enable = false
+			enable = false
 	},
 	outline = {
-		win_position = 'left'
+			win_position = 'left'
+	},
+	finder = {
+		keys = {
+			Tabgo = 't',
+		},
+	},
+	definition = {
+		keys = {
+			--Tabgo = '<leader>t',
+			Tabgo = 't',
+		},
+	},
+	callhierarchy = {
+		keys = {
+			tabe = nil,
+			Tabgo = 't',
+		}
+	},
+	typehierarchy = {
+		keys = {
+			Tabgo = 't',
+			tabe = nil,
+		}
 	},
 })
 
