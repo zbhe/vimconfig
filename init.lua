@@ -4,7 +4,7 @@
 --wget https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim  -O ~/.config/nvim/autoload/plug.vim
 --PlugInstall 安装完插件后需要执行：COQdeps
 --执行 MasonInstall lua-language-server clangd 安装LSP服务器
---然后在 lua/lsp_config.lua中setup
+--然后在 lua/lsp_config.lua中setup)
 --:Mason 可以查看安装列表
 --windows下需要用管理员模式手动安装coq https://github.com/ms-jpq/coq_nvim/issues/589:
 --git -c core.symlinks=true clone https://github.com/ms-jpq/coq_nvim.git
@@ -65,6 +65,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 
 vim.api.nvim_create_user_command('T', function(s)vim.cmd("tabnew " .. s.args) end, { nargs = 1, complete = "file" })
 vim.api.nvim_create_user_command('E', function(s)vim.cmd("tab drop " .. s.args) end, { nargs = 1, complete = "file" })
+vim.api.nvim_create_user_command('Tabgo', function(s)vim.cmd("tab drop " .. s.args) end, { nargs = 1, complete = "file" })
 
 vim.call('plug#begin')
 
@@ -75,13 +76,17 @@ Plug('nvim-lua/plenary.nvim')
 Plug('luochen1990/rainbow')
 Plug('neovim/nvim-lspconfig')
 Plug('ms-jpq/coq_nvim')
+Plug('dcharbon/vim-flatbuffers')
 Plug('ms-jpq/coq.artifacts', {branch = 'artifacts'})
 Plug('ms-jpq/coq.thirdparty', {branch = '3p'})
+Plug('akinsho/toggleterm.nvim', {tag = '*'})
+--Plug('vim-ctrlspace/vim-ctrlspace')
 --Plug('hrsh7th/nvim-cmp')
 Plug('xolox/vim-misc')
 Plug('xolox/vim-session')
 Plug('tomasr/molokai')
 Plug('terryma/vim-expand-region')
+Plug('akinsho/bufferline.nvim')
 --Plug('BurntSushi/ripgrep')
 --Plug('sharkdp/fd')
 --Plug('nvim-telescope/telescope.nvim')
@@ -210,8 +215,14 @@ require("lspsaga").setup({
 		win_position = 'left'
 	},
 })
-keymap("<leader>cmd", ":Lspsaga term_toggle<cr>")
 
+require("toggleterm").setup({
+size = 20,
+direction = "float",
+})
+--keymap("<leader>cmd", ":ToggleTerm<cr>")
+keymap("<leader>cmd", ":Lspsaga term_toggle<cr>")
+--[[]]
 require("lsp_config")
 vim.cmd([[
 set pumheight=10
@@ -225,3 +236,87 @@ vim.g.coq_settings = {
 	auto_start = 'shut-up'
 }
 vim.api.nvim_set_hl(0, 'Comment', { italic=true })
+vim.opt.termguicolors = true
+require("bufferline").setup({
+	options = {
+		mode = "tabs",
+		always_show_bufferline = false,
+		show_close_icon = false,
+		show_buffer_close_icons = false,
+
+		max_name_length = 10,
+		max_prefix_length = 5, -- prefix used when a buffer is de-duplicated
+		truncate_names = false, -- whether or not tab names should be truncated
+		tab_size = 10,
+
+		pick = {
+			alphabet = "abcdefghijklmopqrstuvwxyz1234567890",
+		},
+
+	},
+	highlights = {
+        fill = {
+            fg = "#abb2bf", -- 标签栏空白区域的前景色
+            bg = "#282c34", -- 标签栏空白区域的背景色
+        },
+        background = {
+            fg = "#abb2bf", -- 非活动 buffer 的前景色
+            bg = "#3e4452", -- 非活动 buffer 的背景色
+        },
+        buffer_selected = {
+            fg = "#61afef", -- 当前活动 buffer 的前景色
+            bg = "#1a1f36", -- 当前活动 buffer 的背景色
+            bold = true,    -- 使用加粗样式
+            italic = false, -- 不使用斜体
+        },
+        buffer_visible = {
+            fg = "#98c379", -- 可见但未选中 buffer 的前景色
+            bg = "#3e4452", -- 可见但未选中 buffer 的背景色
+        },
+        close_button = {
+            fg = "#e06c75", -- 关闭按钮的前景色
+            bg = "#3e4452", -- 关闭按钮的背景色
+        },
+        close_button_selected = {
+            fg = "#ffffff", -- 选中 buffer 的关闭按钮前景色
+            bg = "#61afef", -- 选中 buffer 的关闭按钮背景色
+        },
+        separator = {
+            fg = "#3e4452", -- 标签之间分隔符的颜色
+            bg = "#282c34", -- 分隔符的背景色
+        },
+        separator_selected = {
+            fg = "#61afef", -- 当前 buffer 分隔符的颜色
+            bg = "#282c34", -- 分隔符背景色
+        },
+        tab = {
+            fg = "#abb2bf", -- 未激活的标签页前景色
+            bg = "#3e4452", -- 未激活的标签页背景色
+        },
+        tab_selected = {
+            fg = "#ffffff", -- 选中标签页前景色
+            bg = "#61afef", -- 选中标签页背景色
+        },
+        modified = {
+            fg = "#e5c07b", -- 修改过的文件的提示色
+            bg = "#3e4452",
+        },
+        modified_selected = {
+            fg = "#e5c07b", -- 当前修改文件的提示色
+            bg = "#61afef",
+        },
+        duplicate = {
+            fg = "#e5c07b", -- 重复文件的前景色
+            bg = "#3e4452",
+            italic = true, -- 使用斜体标记
+        },
+        duplicate_selected = {
+            fg = "#c678dd",
+            bg = "#61afef",
+            italic = true,
+        },
+    },
+})
+keymap("<leader>bg", ":BufferLinePick<CR>")
+keymap("<leader>bc", ":BufferLinePickClose<CR>")
+keymap("<leader>bb", "<cmd>b#<CR>")
