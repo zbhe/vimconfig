@@ -203,7 +203,36 @@ function _G.check_back_space()
 	return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
 end
 
-keymap("<space>", ":nohlsearch<cr>")
+-- init.lua 配置
+
+
+-- 高亮当前光标下的单词
+local function highlight_current_word()
+	local current_word = vim.fn.escape(vim.fn.expand('<cword>'), "\\")  -- 获取光标下的单词
+	if string.len(current_word) < 1 then
+		return
+	end
+	return vim.fn.matchadd('Search', '\\<'.. current_word ..'\\>')  -- 使用 matchadd 高亮单词
+end
+
+-- 取消高亮
+local function clear_highlight(id)
+	vim.fn.matchdelete(id)  -- 清除高亮
+end
+
+-- 切换高亮状态
+_G.toggle_highlight = function()
+	if _G.highlighted_id then
+		clear_highlight(highlighted_id)  -- 如果已经高亮，取消高亮
+		_G.highlighted_id = nil
+	else
+		_G.highlighted_id = highlight_current_word()  -- 否则高亮当前光标单词
+	end
+end
+
+-- 映射空格键来切换高亮
+vim.api.nvim_set_keymap('n', '<Space>', ':lua toggle_highlight()<CR>', { noremap = true, silent = true })
+
 vim.g.Tlist_GainFocus_On_ToggleOpen = 1
 vim.g.Tlist_Show_One_File = 1
 keymap("<leader>fs", ":TlistToggle<cr>")
