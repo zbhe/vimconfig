@@ -212,7 +212,7 @@ local function highlight_current_word()
 	if string.len(current_word) < 1 then
 		return
 	end
-	return vim.fn.matchadd('Search', '\\<'.. current_word ..'\\>')  -- 使用 matchadd 高亮单词
+	return vim.fn.matchadd('Search', '\\c\\<'.. current_word ..'\\>')  -- 使用 matchadd 高亮单词
 end
 
 -- 取消高亮
