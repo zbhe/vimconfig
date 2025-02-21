@@ -212,7 +212,10 @@ local function highlight_current_word()
 	if string.len(current_word) < 1 then
 		return
 	end
-	return vim.fn.matchadd('Search', '\\c\\<'.. current_word ..'\\>')  -- 使用 matchadd 高亮单词
+	local pattern = '\\c\\<'.. current_word ..'\\>'
+	-- 设置查找寄存器，直接用 setreg 来设置查找内容
+	vim.fn.setreg('/', pattern)
+	return vim.fn.matchadd('Search', pattern)  -- 使用 matchadd 高亮单词
 end
 
 -- 取消高亮
@@ -224,6 +227,7 @@ end
 _G.toggle_highlight = function()
 	if _G.highlighted_id then
 		clear_highlight(highlighted_id)  -- 如果已经高亮，取消高亮
+		vim.fn.setreg('/', "")
 		_G.highlighted_id = nil
 	else
 		_G.highlighted_id = highlight_current_word()  -- 否则高亮当前光标单词
