@@ -207,12 +207,17 @@ end
 
 
 -- 高亮当前光标下的单词
-local function highlight_current_word()
+local function highlight_current_word(word)
 	local current_word = vim.fn.escape(vim.fn.expand('<cword>'), "\\")  -- 获取光标下的单词
 	if string.len(current_word) < 1 then
 		return
 	end
-	local pattern = '\\c\\<'.. current_word ..'\\>'
+	local pattern
+	if word then
+		pattern = '\\c\\<'.. current_word ..'\\>'
+	else
+		pattern = '\\c'.. current_word
+	end
 	-- 设置查找寄存器，直接用 setreg 来设置查找内容
 	vim.fn.setreg('/', pattern)
 	return vim.fn.matchadd('Search', pattern)  -- 使用 matchadd 高亮单词
@@ -224,18 +229,21 @@ local function clear_highlight(id)
 end
 
 -- 切换高亮状态
-_G.toggle_highlight = function()
-	if _G.highlighted_id then
-		clear_highlight(highlighted_id)  -- 如果已经高亮，取消高亮
+_G.toggle_highlight = function(word)
+	_G.highlighted_id = _G.highlighted_id or {}
+	local bufnr = vim.fn.bufnr()
+	if _G.highlighted_id[bufnr] then
+		clear_highlight(highlighted_id[bufnr])  -- 如果已经高亮，取消高亮
 		vim.fn.setreg('/', "")
-		_G.highlighted_id = nil
+		_G.highlighted_id[bufnr] = nil
 	else
-		_G.highlighted_id = highlight_current_word()  -- 否则高亮当前光标单词
+		_G.highlighted_id[bufnr] = highlight_current_word(word)  -- 否则高亮当前光标单词
 	end
 end
 
 -- 映射空格键来切换高亮
-vim.api.nvim_set_keymap('n', '<Space>', ':lua toggle_highlight()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<Space>', ':lua toggle_highlight(true)<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader><Space>', ':lua toggle_highlight()<CR>', { noremap = true, silent = true })
 
 vim.g.Tlist_GainFocus_On_ToggleOpen = 1
 vim.g.Tlist_Show_One_File = 1
