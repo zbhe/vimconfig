@@ -74,14 +74,21 @@ Plug('junegunn/vim-easy-align')
 Plug('folke/which-key.nvim')
 Plug('nvim-lua/plenary.nvim')
 Plug('luochen1990/rainbow')
-Plug('neovim/nvim-lspconfig')
 Plug('ms-jpq/coq_nvim')
 Plug('dcharbon/vim-flatbuffers')
 Plug('ms-jpq/coq.artifacts', {branch = 'artifacts'})
 Plug('ms-jpq/coq.thirdparty', {branch = '3p'})
 Plug('akinsho/toggleterm.nvim', {tag = '*'})
---Plug('vim-ctrlspace/vim-ctrlspace')
---Plug('hrsh7th/nvim-cmp')
+
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+
 Plug('xolox/vim-misc')
 Plug('xolox/vim-session')
 Plug('tomasr/molokai')
