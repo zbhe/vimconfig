@@ -27,7 +27,7 @@ vim.o.ignorecase = true
 vim.o.encoding = 'utf-8'
 vim.o.laststatus = 0
 vim.opt.shiftwidth = 4
-vim.api.nvim_set_option("clipboard","unnamed")
+--vim.api.nvim_set_option("clipboard","unnamed")
 
 local function keymap(lhs, rhs, mode, opts)
 	local options = { noremap = true, silent = true }
@@ -122,6 +122,7 @@ Plug('nvim-tree/nvim-tree.lua')
 Plug('scrooloose/nerdcommenter')
 Plug('MattesGroeger/vim-bookmarks')
 Plug('nvim-treesitter/nvim-treesitter')
+Plug('ojroques/nvim-osc52')
 --Plug('vim-airline/vim-airline')
 --Plug('vim-airline/vim-airline-themes')
 Plug('navarasu/onedark.nvim')
@@ -303,6 +304,22 @@ set shortmess+=c
 set signcolumn=number
 colorscheme gruvbox
 ]])
+
+require('osc52').setup {
+	max_length = 0,  -- 不限制复制长度
+	silent = false,
+	trim = false,
+}
+
+-- 自动复制到系统剪贴板
+vim.api.nvim_create_autocmd('TextYankPost', {
+	callback = function()
+		if vim.v.event.operator == 'y' and vim.v.event.regname == '' then
+			require('osc52').copy_register('"')
+		end
+	end,
+})
+
 vim.g.coq_settings = {
 	auto_start = 'shut-up'
 }
