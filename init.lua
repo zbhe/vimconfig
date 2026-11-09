@@ -4,7 +4,7 @@
 -- 安装说明：
 -- 1. 安装 Nerd 字体：https://www.nerdfonts.com/font-downloads
 -- 2. 安装 vim-plug：
---    wget https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim -O ~/.config/nvim/autoload/plug.vim
+-- wget https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim -O ~/.config/nvim/autoload/plug.vim
 -- 3. 执行 :PlugInstall 安装插件
 -- 4. 安装 COQ 依赖：:COQdeps
 -- 5. 安装 LSP 服务器：:MasonInstall lua-language-server clangd
